@@ -31,11 +31,11 @@ This repository contains the code and dataset used in the paper "The Effectivene
     pip install -r requirements.txt
     ```
 
-### Data Preparation
+### Dataset
 
 The dataset is located in the `data/` folder. If you need to download the dataset, you can place it in this folder.
 
-### Training the Model
+### Training
 
 To train the model, run the following command:
 
@@ -45,7 +45,7 @@ python src/train.py
 
 This script will train the INN model using the dataset in the `data/` folder and save the results to the `results/` folder.
 
-### Evaluating the Model
+### Evaluation
 
 To evaluate the trained model, run the following command:
 
@@ -80,8 +80,8 @@ If you find this repository useful, please cite our paper:
 @article{wang2025effectiveness,
   title={The Effectiveness of Invertible Neural Network in Variable Material 3D Printing: an Application to Screw-based Material Extrusion},
   author={Wang, Yunze and Zhang, Beining and Lu, Siwei and Yang, Chuncheng and Wang, Ling and He, Jiankang and Sun, Changning and Li, Dichen},
-  journal={Additive Manufacturing Frontiers},
-  year={2025}
+  journal={},
+  year={}
 }
 ```
 
@@ -95,6 +95,4 @@ Special thanks to the authors of MatDesINNe for their work on inverse materials 
 
 ## Contact
 
-For any questions or inquiries, please contact:
-
-- Yunze Wang (wangyunze@stu.xjtu.edu.cn)
+For any questions or inquiries, please contact: Yunze Wang (wangyunze@stu.xjtu.edu.cn)
