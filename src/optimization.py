@@ -75,11 +75,12 @@ def perform_localization(y_target, x_true, model, lr=0.01, n_iter=1000):
     x_samples = sample_posterior(y_target, 5000, model)
 
     # Identify effective samples with a specific target y and delta
-    delta = 1.0
+    delta = 0.2
     eff_list = []
     out_y1 = model.forward(x_samples)
-    rev_x1_eff = x_samples.cpu().data.numpy()
+
     for j in range(len(out_y1[:, 0])):
+        rev_x1_eff = x_samples.cpu().data.numpy()
         if (y_target + delta > out_y1[j, 0] > y_target - delta
                 and x_true[0] + delta > rev_x1_eff[j, 0] > x_true[0] - delta
                 and x_true[-1] + delta > rev_x1_eff[j, -1] > x_true[-1] - delta):
@@ -96,15 +97,16 @@ def perform_localization(y_target, x_true, model, lr=0.01, n_iter=1000):
     x_samples = x_samples.detach().requires_grad_(True)
 
     # Perform gradient-based optimization
-    x_samples.requires_grad_(True)
-    optimizer = torch.optim.Adam([x_samples], lr=lr)
+    # x_samples.requires_grad_(True)
+    # optimizer = torch.optim.Adam([x_samples], lr=lr)
 
     for k in range(n_iter):
-        optimizer.zero_grad()
-        out_y1 = model(x_samples)
+        x_samples = Variable(x_samples, requires_grad=True)
+        out_y1 = model.forward(x_samples)
         re_loss = torch.mean((out_y1[:, 0] - y_target) ** 2)
         re_loss.backward()
-        optimizer.step()
+        x_samples_new = x_samples - lr * x_samples.grad
+        x_samples = x_samples_new
 
     return x_samples.detach()
 
@@ -183,7 +185,6 @@ def main():
         y_all = test_data['y'].to(device)
         min_x = test_data['min_x'].to(device)
         max_x = test_data['max_x'].to(device)
-
         # Evaluate localization
         best_inv_x = evaluate_localization(model, x_all, y_all, min_x, max_x)
 

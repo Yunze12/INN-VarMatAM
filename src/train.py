@@ -90,8 +90,8 @@ def train_model():
             logging.info(f"\nFold {fold + 1}/{len(train_datasets)} training starts")
 
             # Create data loaders
-            train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-            val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+            train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=False)
+            val_dataloader = DataLoader(val_dataset, batch_size=10, shuffle=False)
 
             # Initialize model, optimizer, and scheduler
             inn = INN().to(device)
@@ -102,7 +102,8 @@ def train_model():
                 eps=1e-6,
                 weight_decay=l2_weight_reg
             )
-            scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=gamma)
+            # scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=gamma)
+            scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=gamma)
 
             # Track losses for early stopping
             train_losses = []
@@ -128,19 +129,23 @@ def train_model():
                     if train_backward_mmd:
                         losses.append(loss_backward_mmd(inputs, targets))
                     if train_reconstruction:
-                        losses.append(loss_reconstruction(outputs, inputs))
+                        losses.append(loss_reconstruction(outputs.data, inputs))
 
                     # Backpropagation
                     total_loss = sum(losses)
                     total_loss.backward()
                     optim_step(optimizer)
 
-                    epoch_loss += total_loss.item()
+                    train_losses.append(total_loss.item())
 
                 # Log training loss
-                train_loss = epoch_loss / len(train_dataloader)
-                train_losses.append(train_loss)
-                logging.info(f"Epoch {epoch + 1}, Training Loss: {train_loss:.6f}")
+                logging.info(f"Epoch {epoch + 1}, Training Loss: {train_losses[-1]:.6f}")
+
+                # Learning rate scheduling
+                if len(train_losses) >= 10:
+                    now_loss = train_losses[-5:]
+                    now_average_loss = sum(now_loss) / len(now_loss)
+                    scheduler.step(int(now_average_loss))
 
                 # Validation phase
                 inn.eval()
@@ -150,7 +155,7 @@ def train_model():
                         inputs = inputs.to(device)
                         targets = targets.to(device)
 
-                        outputs = inn(inputs)
+                        outputs = inn.forward(inputs)
 
                         # Compute validation losses
                         losses = []
@@ -161,17 +166,13 @@ def train_model():
                         if train_backward_mmd:
                             losses.append(loss_backward_mmd(inputs, targets))
                         if train_reconstruction:
-                            losses.append(loss_reconstruction(outputs, inputs))
+                            losses.append(loss_reconstruction(outputs.data, inputs))
 
-                        val_loss += sum(losses).item()
+                        val_loss = sum(losses)
+                        val_losses.append(val_loss.item())
 
                 # Log validation loss
-                val_loss = val_loss / len(val_dataloader)
-                val_losses.append(val_loss)
                 logging.info(f"Epoch {epoch + 1}, Validation Loss: {val_loss:.6f}")
-
-                # Learning rate scheduling
-                scheduler.step()
 
                 # Save model checkpoint
                 if (epoch + 1) % 100 == 0:

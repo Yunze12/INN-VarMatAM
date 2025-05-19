@@ -38,7 +38,7 @@ def load_and_preprocess_data(data_file_path):
         normal_y = minmax_normal(y, min_y, max_y)
 
         # Add random tensor to y
-        torch.manual_seed(seed)
+        torch.manual_seed(60)
         random_tensor = torch.randn(len(outputs), ndim_z)
         normal_y = torch.cat((normal_y, random_tensor), dim=1)
 

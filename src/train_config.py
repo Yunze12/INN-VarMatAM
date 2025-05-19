@@ -37,18 +37,19 @@ add_z_noise = 2e-2
 add_pad_noise = 1e-2
 ndim_y = 1
 ndim_z = 2
-data_file_path = 'C:/Users/Lcxg-6/Desktop/inn2/data/data.xlsx'
-test_dataset_path = 'C:/Users/Lcxg-6/Desktop/inn2/data/'
-test_data_path = 'C:/Users/Lcxg-6/Desktop/inn2/data/test_dataset.pth'
-model_path = 'C:/Users/Lcxg-6/Desktop/inn2/results/trained_model/'
-eval_model_path = 'C:/Users/Lcxg-6/Desktop/inn2/results/trained_model/modelfold1epoch8000.pth'
-figure_path = 'C:/Users/Lcxg-6/Desktop/inn2/results/figure/'
+data_file_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/data/data.xlsx'
+test_dataset_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/data/'
+test_data_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/data/test_dataset.pth'
+model_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/results/trained_model/'
+eval_model_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/results/trained_model/modelfold6epoch8000.pth'
+# eval_model_path = 'C:/Users/Lcxg-6/Desktop/INN/model/modelfold4epoch7999.pth'
+figure_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/results/figure/'
 
 # Training parameters
 seed = 61
 num_epochs = 8000
 final_decay = 0.02
-lr_init = 5.0e-3
+lr_init = 5.0e-4
 adam_betas = (0.9, 0.95)
 l2_weight_reg = 1e-5
 gamma = final_decay ** (1. / num_epochs)

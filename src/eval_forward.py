@@ -33,7 +33,7 @@ def evaluate_forward_prediction(model_path, test_data_path):
     try:
         # Load trained model
         model = INN().to(device)
-        checkpoint = torch.load(model_path, map_location=device, weights_only=True)
+        checkpoint = torch.load(eval_model_path, map_location=device, weights_only=True)
         model.load_state_dict(checkpoint['model_state_dict'])
         model.eval()
 
@@ -48,7 +48,7 @@ def evaluate_forward_prediction(model_path, test_data_path):
 
         # Create test dataset and dataloader
         test_dataset = TensorDataset(test_x, test_y)
-        test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+        test_dataloader = DataLoader(test_dataset, batch_size=10, shuffle=False)
 
         # Evaluate on the test set
         with torch.no_grad():
@@ -57,7 +57,7 @@ def evaluate_forward_prediction(model_path, test_data_path):
                 targets = targets.float().to(device)
 
                 # Make predictions
-                predictions = model(inputs)  # Forward prediction: x -> y
+                predictions = model.forward(inputs)  # Forward prediction: x -> y
                 reconstructed_x = model.inverse(targets)  # Backward prediction: y -> x
 
                 # Collect results
