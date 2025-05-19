@@ -1,5 +1,6 @@
 import torch
 import logging
+import os
 
 # Configure logging
 logging.basicConfig(
@@ -37,12 +38,15 @@ add_z_noise = 2e-2
 add_pad_noise = 1e-2
 ndim_y = 1
 ndim_z = 2
-data_file_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/data/data.xlsx'
-test_dataset_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/data/'
-test_data_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/data/test_dataset.pth'
-model_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/results/trained_model/'
-eval_model_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/results/trained_model/modelfold6epoch8000.pth'
-figure_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/results/figure/'
+
+base_dir = os.path.dirname(os.path.abspath(__file__))
+
+data_file_path = os.path.join(base_dir, '../data/data.xlsx')
+test_dataset_path = os.path.join(base_dir, '../data/')
+test_data_path = os.path.join(base_dir, '../data/test_dataset.pth')
+model_path = os.path.join(base_dir, '../results/trained_model/')
+eval_model_path = os.path.join(base_dir, '../results/trained_model/modelfold6epoch8000.pth')
+figure_path = os.path.join(base_dir, '../results/figure/')
 
 # Training parameters
 seed = 61
