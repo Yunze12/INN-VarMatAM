@@ -42,7 +42,6 @@ test_dataset_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/data/'
 test_data_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/data/test_dataset.pth'
 model_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/results/trained_model/'
 eval_model_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/results/trained_model/modelfold6epoch8000.pth'
-# eval_model_path = 'C:/Users/Lcxg-6/Desktop/INN/model/modelfold4epoch7999.pth'
 figure_path = 'C:/Users/Lcxg-6/PycharmProjects/INN-VarMatAM/results/figure/'
 
 # Training parameters
